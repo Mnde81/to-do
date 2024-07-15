@@ -9,18 +9,19 @@ const todoData = [];
 submitButtonDOM.addEventListener('click', e => {
     e.preventDefault();
 
-    if (textInputDOM.value.length === 0) {
+    if (!isValidText(textInputDOM.value)) {
         return;
     }
 
     todoData.push({
         text: textInputDOM.value,
-        createdAt: new Date().getTime(), 
+        createdAt: Date.now(), 
     });
     renderList();
 });
 
 // Date.now(),
+
 
 function renderList() {
     if (todoData.length === 0) {
@@ -71,7 +72,12 @@ function renderTaskList() {
         const updateDOM = buttonsDOM[0];
         updateDOM.addEventListener('click', event => {
             event.preventDefault();
-            todoData[i].text = updateInputDOM.value;
+            
+            if (!isValidText(updateInputDOM.value)) {
+                return;
+            }
+
+            todoData[i].text = updateInputDOM.value.trim();
             renderTaskList();
            });
 
@@ -93,10 +99,35 @@ function renderTaskList() {
     }
 }
 
+// function formatTime(timeInMs) {
+//     // mdn: js Date -> getYear, getMonth, getDay, getHour...
+//     let date = new Date(timeInMs);
+//     return date.toString();
+// }
+
 function formatTime(timeInMs) {
-    // mdn: js Date -> getYear, getMonth, getDay, getHour...
-    let date = new Date(timeInMs);
-    return date.toString();
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
+    // minimum 100-ieji metai ???
+    // maximum ???
+    const date = new Date(timeInMs);
+    const y = date.getFullYear();
+    const m = (date.getMonth() < 9 ? '0' : '') + (date.getMonth() + 1);
+    const d = (date.getDate() < 10 ? '0' : '') + date.getDate();
+    const h = date.getHours();
+    const mn = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+    const s = (date.getSeconds() < 10 ? '0' : '') + date.getSeconds();
+
+    return `${y}-${m}-${d} ${h}:${mn}:${s}`;
+}
+
+function isValidText(text) {
+    if (typeof text !== 'string'
+        || text.trim() === ''
+        || text[0].toUpperCase() !== text[0]) {
+        return false;
+    }
+
+    return true;
 }
 
 // CRUD operations:
