@@ -36,7 +36,7 @@ submitButtonDOM.addEventListener('click', e => {
     });
     localStorage.setItem('tasks', JSON.stringify(todoData));
     renderList();
-    showToastSuccess('Įrašas sėkmingas sukurtas.');
+    showToastSuccess('Įrašas sėkmingai sukurtas.');
 });
 
 function renderList() {
@@ -115,7 +115,7 @@ function renderTaskList() {
         deleteDOM.addEventListener('click', () => {
             todoData.splice(i, 1);
             renderList();
-            showToastSuccess('Įrašas sėkmingas ištrintas.');
+            showToastSuccess('Įrašas sėkmingai ištrintas.');
         });
     }
 }
